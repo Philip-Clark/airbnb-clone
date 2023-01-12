@@ -16,6 +16,7 @@ export default function ListingTile({ data }) {
     <a className="ListingTile" href="">
       <div className="preview">
         <Imgix
+          className="listingImage"
           src={url}
           sizes="250px"
           imgixParams={{
