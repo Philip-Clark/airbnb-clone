@@ -1,16 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 * {
   margin: 0;
   padding: 0;
+}
+body {
+  font-family: 'Poppins', sans-serif, Arial, Helvetica, sans-serif;
 }
 
 ul {
   display: grid;
   grid-template-columns: repeat(auto-fill, 1fr);
-  gap: 3em 1em;
+  gap: 3em 2em;
 }
 
 .mainSection {
   padding: 3em 6em;
+}
+
+h1 {
+  margin-bottom: 3em;
+  text-align: center;
 }
 
 .ListingTile {
@@ -25,33 +35,51 @@ ul {
   margin: 0;
 }
 
-.location {
+.title {
   padding-top: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ratingIcon {
+  font-size: 1em !important;
+}
+.rating {
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  align-self: flex-start;
+  width: fit-content;
+  text-overflow: clip;
+}
+
+.location {
+  font-weight: 600;
 }
 .details {
-  font-weight: 500;
-  opacity: 0.5;
+  font-weight: 400;
+  color: #717171;
 }
 .price {
   padding-top: 1em;
 }
+.price span {
+  font-weight: 400;
+}
 
 .preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
   border-radius: 1em;
-  flex: 1;
+
+  aspect-ratio: 1 / 1;
   background: rgb(192, 192, 192);
   overflow: hidden;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
+  position: relative;
 }
 img {
-  min-height: 100%;
-  min-width: 100%;
-  /* aspect-ratio: 1 / 1; */
-  object-fit: cover;
-  text-align: center;
+  height: 100%;
 }
 
 @media (min-width: 600px) {

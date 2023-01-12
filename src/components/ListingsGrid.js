@@ -37,7 +37,7 @@ export default function ListingsGrid(props) {
   }, [scrollTop, data]);
 
   return (
-    <div className="ListingsGrid"
+    <div className="ListingsGrid">
       <ul id="listingsGrid">
         {data.map((item) => (
           <ListingTile key={item.id} data={item} class="listingThumbnail" />
