@@ -1,49 +1,98 @@
-import { useEffect, useState } from 'react';
 import Imgix from 'react-imgix';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
+import styled from 'styled-components';
 
 const imgIXDomain = 'https://listingthumbnails.imgix.net/';
+const imgixParams = {
+  q: '0',
+  auto: 'compress,format',
+  ar: '1:1',
+  fit: 'crop',
+};
 
 export default function ListingTile({ data }) {
-  const [render, setRender] = useState(true);
-  let image = data.picture_url;
-  image = image.replace('https://a0.muscache.com/pictures/', '');
-  const url = imgIXDomain + image;
-  console.log(url);
+  const url = imgIXDomain + data.picture_url.replace('https://a0.muscache.com/pictures/', '');
+  const rating = data.review_scores_rating
+    ? parseFloat(data.review_scores_rating).toPrecision(2)
+    : '--';
 
-  if (!render) return;
   return (
-    <a className="ListingTile" href="">
-      <div className="preview">
-        <Imgix
-          className="listingImage"
-          src={url}
-          sizes="250px"
-          imgixParams={{
-            q: '0',
-            auto: 'compress,format',
-            ar: '1:1',
-            fit: 'crop',
-          }}
-        />
-      </div>
-
-      <div className="title">
-        <h4 className="location">
+    <Tile href="">
+      <Preview>
+        <Imgix imgixParams={imgixParams} className="listingImage" src={url} sizes="250px" />
+      </Preview>
+      <Title>
+        <Location>
           {data.neighbourhood_cleansed}, {data.neighbourhood_group_cleansed}
-        </h4>
-
-        <h4 className="rating">
+        </Location>
+        <Rating>
           <StarRoundedIcon className="ratingIcon" />
-          {data.review_scores_rating ? parseFloat(data.review_scores_rating).toPrecision(2) : '--'}
-        </h4>
-      </div>
-      <h4 className="details">
-        {data.beds} bed{data.beds > 1 && 's'}, {data.bathrooms_text}
-      </h4>
-      <h4 className="price">
+          {rating}
+        </Rating>
+      </Title>
+
+      <Details>
+        {data.beds} bed, {data.bathrooms_text}
+      </Details>
+      <Price>
         {data.price} <span>night</span>
-      </h4>
-    </a>
+      </Price>
+    </Tile>
   );
 }
+
+const Tile = styled.a`
+  display: flex;
+  flex-direction: column;
+  aspect-ratio: 1 / 1.2;
+  color: black;
+  text-decoration: none;
+`;
+
+const Price = styled.h4`
+  padding-top: 1em;
+  span {
+    font-weight: 400;
+  }
+`;
+const Details = styled.h4`
+  font-weight: 400;
+  color: #717171;
+`;
+const Location = styled.h4`
+  font-weight: 600;
+`;
+const Rating = styled.h4`
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  align-self: flex-start;
+  width: fit-content;
+  text-overflow: clip;
+
+  .ratingIcon {
+    font-size: 1em !important;
+  }
+`;
+const Title = styled.h4`
+  padding-top: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const Preview = styled.div`
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  align-content: center;
+  border-radius: 1em;
+  aspect-ratio: 1 / 1;
+  background: rgb(192, 192, 192);
+  overflow: hidden;
+
+  .listingImage {
+    margin: 0;
+    object-fit: cover;
+    object-position: center;
+  }
+`;
