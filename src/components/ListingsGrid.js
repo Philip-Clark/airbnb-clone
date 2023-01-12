@@ -1,14 +1,13 @@
 import papaparse from 'papaparse';
 import { useEffect, useState } from 'react';
 import ListingTile from './ListingTile';
-import listings from '../data/listingsLong.csv';
+import { listings } from '../data/listings';
 
-export default function ListingsGrid() {
-  const [results, setResults] = useState([]);
-  const [data, setData] = useState(new Array(30));
+export default function ListingsGrid(props) {
   const [slice, setSlice] = useState(30);
   const [scrollTop, setScrollTop] = useState(0);
   const [columnCount, setColumnCount] = useState(10);
+  const data = listings.slice(0, slice);
 
   window.addEventListener('resize', () => {
     const grid = document.getElementById('listingsGrid');
@@ -16,22 +15,6 @@ export default function ListingsGrid() {
     const newColumnCount = columnsString.split(' ').length;
     setColumnCount(newColumnCount);
   });
-
-  const papaConfig = {
-    header: true,
-    download: true,
-    preview: 100,
-    complete: (chunkResults) => {
-      setResults(chunkResults.data);
-      setData(chunkResults.data.slice(0, slice));
-    },
-    error: (error, file) => {
-      console.log('Error while parsing:', error, file);
-    },
-  };
-  useEffect(() => {
-    papaparse.parse(listings, papaConfig);
-  }, []);
 
   function currentScrollPercentage() {
     return (
@@ -46,7 +29,6 @@ export default function ListingsGrid() {
       setScrollTop(e.target.documentElement.scrollTop);
       if (currentScrollPercentage() > 95) {
         setSlice(slice + columnCount);
-        setData(results.slice(0, slice));
       }
     };
     window.addEventListener('scroll', onScroll);

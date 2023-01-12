@@ -1,19 +1,24 @@
 import { useEffect, useState } from 'react';
+import Imgix from 'react-imgix';
+
+const imgIXDomain = 'https://listingthumbnails.imgix.net/';
 
 export default function ListingTile({ data }) {
   const [render, setRender] = useState(true);
-  const image = data.picture_url;
-  useEffect(() => {
-    fetch(data.picture_url).then((r) => {
-      setRender(r.ok);
-    });
-  }, [render, data.picture_url]);
+  let image = data.picture_url;
+  image = image.replace('https://a0.muscache.com/pictures/', '');
+  const url = imgIXDomain + image;
+  console.log(url);
 
   if (!render) return;
   return (
     <a className="ListingTile" href={image}>
       <div className="preview">
-        <img src={image + '?im_w=720'} alt="..." width="0" loading="eager" />
+        <Imgix
+          src={url}
+          sizes="400px"
+          imgixParams={{ q: '0', auto: 'compress,format', fit: 'min' }}
+        />
       </div>
 
       <h4 className="location">
