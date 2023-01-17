@@ -56,12 +56,12 @@ const StyleWrapped = styled.div`
   ul {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 3em 2em;
+    gap: 1.5em 1.5em;
   }
 
   @media (min-width: 600px) {
     ul {
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     }
   }
 `;

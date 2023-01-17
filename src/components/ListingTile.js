@@ -7,12 +7,12 @@ const imgIXDomain = 'https://listingthumbnails.imgix.net/';
 const imgixParams = {
   q: '0',
   auto: 'compress,format',
-  ar: '1:1',
+  ar: '1:0.95',
   fit: 'crop',
 };
 
 export default function ListingTile({ data }) {
-  const url = imgIXDomain + data.picture_url.replace('https://a0.muscache.com/pictures/', '');
+  const url = imgIXDomain + data.picture_url.replace('https://a0.muscache.com/', '');
   const rating = data.review_scores_rating
     ? parseFloat(data.review_scores_rating).toPrecision(2)
     : '--';
@@ -89,7 +89,7 @@ const Preview = styled.div`
   justify-content: center;
   align-content: center;
   border-radius: 1em;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 1 / 0.95;
   background: rgb(192, 192, 192);
   overflow: hidden;
 
