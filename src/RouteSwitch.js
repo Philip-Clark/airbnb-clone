@@ -1,15 +1,15 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, HashRouter } from 'react-router-dom';
 import App from './App';
 import ListingPage from './components/ListingPage';
 
 const RouteSwitch = () => {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="/listingPage" element={<ListingPage />} />
+        <Route path="/listingPage/:id" element={<ListingPage />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 };
 

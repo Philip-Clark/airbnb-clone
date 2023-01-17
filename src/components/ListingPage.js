@@ -30,6 +30,10 @@ function ListingPage() {
   const hostJoinYear = hostJoinDateText.getFullYear();
   const hostJoinMonth = Intl.DateTimeFormat('en-US', { month: 'long' }).format(hostJoinDateText);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+
   return (
     <StyleWrapped id="ListingPage">
       <Title>{data.name}</Title>

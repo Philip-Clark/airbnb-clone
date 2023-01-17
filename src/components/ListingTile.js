@@ -18,7 +18,7 @@ export default function ListingTile({ data }) {
     : '--';
 
   return (
-    <Link to={`/listingPage`} state={{ data: data }}>
+    <Link to={`/listingPage/${data.id}`} state={{ data: data }}>
       <Tile>
         <Preview>
           <Imgix imgixParams={imgixParams} className="listingImage" src={url} sizes="250px" />
