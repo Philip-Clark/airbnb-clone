@@ -61,7 +61,7 @@ const StyleWrapped = styled.div`
 
   @media (min-width: 600px) {
     ul {
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     }
   }
 `;

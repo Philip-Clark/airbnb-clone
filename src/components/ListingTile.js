@@ -1,6 +1,7 @@
 import Imgix from 'react-imgix';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const imgIXDomain = 'https://listingthumbnails.imgix.net/';
 const imgixParams = {
@@ -17,31 +18,33 @@ export default function ListingTile({ data }) {
     : '--';
 
   return (
-    <Tile href="">
-      <Preview>
-        <Imgix imgixParams={imgixParams} className="listingImage" src={url} sizes="250px" />
-      </Preview>
-      <Title>
-        <Location>
-          {data.neighbourhood_cleansed}, {data.neighbourhood_group_cleansed}
-        </Location>
-        <Rating>
-          <StarRoundedIcon className="ratingIcon" />
-          {rating}
-        </Rating>
-      </Title>
+    <Link to={`/listingPage`} state={{ data: data }}>
+      <Tile>
+        <Preview>
+          <Imgix imgixParams={imgixParams} className="listingImage" src={url} sizes="250px" />
+        </Preview>
+        <Title>
+          <Location>
+            {data.neighbourhood_cleansed}, {data.neighbourhood_group_cleansed}
+          </Location>
+          <Rating>
+            <StarRoundedIcon className="ratingIcon" />
+            {rating}
+          </Rating>
+        </Title>
 
-      <Details>
-        {data.beds} bed, {data.bathrooms_text}
-      </Details>
-      <Price>
-        {data.price} <span>night</span>
-      </Price>
-    </Tile>
+        <Details>
+          {data.beds} bed, {data.bathrooms_text}
+        </Details>
+        <Price>
+          {data.price} <span>night</span>
+        </Price>
+      </Tile>
+    </Link>
   );
 }
 
-const Tile = styled.a`
+const Tile = styled.div`
   display: flex;
   flex-direction: column;
   aspect-ratio: 1 / 1.2;
