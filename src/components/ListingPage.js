@@ -306,6 +306,7 @@ const ShowAmenities = styled.button`
   font-weight: 600;
   border: 1px solid black;
   border-radius: 0.5em;
+  background-color: white;
 `;
 
 const Amenity = styled.p`
