@@ -18,6 +18,7 @@ const stripHtml = (string) => {
 };
 
 function ListingPage() {
+  const [amenitiesShown, setAmenitiesShown] = useState(false);
   const location = useLocation();
   const data = location.state.data;
   const url = imgIXDomain + data.picture_url.replace('https://a0.muscache.com/', '');
@@ -81,38 +82,46 @@ function ListingPage() {
               </AmenitiesList>
               <ShowAmenities
                 onClick={() => {
-                  setAmenitiesSlice(100);
+                  setAmenitiesShown(!amenitiesShown);
+                  setAmenitiesSlice(amenitiesShown ? 6 : 1000);
                 }}
               >
-                Show all {amenities.length} amenities
+                {amenitiesShown ? 'Show Less' : `Show all ${amenities.length} amenities`}
               </ShowAmenities>
             </Section>
             <Section>
-              <Rating> {data.number_of_reviews} reviews</Rating>
-              <p>Latest review : {data.last_review}</p>
-              <RatingTable>
-                <div id="overAll">
-                  <h2>overall rating:</h2> <h2>{data.review_scores_rating} </h2>
-                </div>
-                <div>
-                  <h3>value score:</h3> <h3> {data.review_scores_value}</h3>
-                </div>
-                <div>
-                  <h3>location score:</h3> <h3> {data.review_scores_location}</h3>
-                </div>
-                <div>
-                  <h3>cleanliness score:</h3> <h3> {data.review_scores_cleanliness} </h3>
-                </div>
-                <div>
-                  <h3>listing accuracy score: </h3> <h3>{data.review_scores_accuracy}</h3>
-                </div>
-                <div>
-                  <h3>check-in score:</h3> <h3> {data.review_scores_checkin}</h3>
-                </div>
-                <div>
-                  <h3>communication score: </h3> <h3>{data.review_scores_communication}</h3>
-                </div>
-              </RatingTable>
+              <h2>How others rated this location</h2>
+              <RatingSection>
+                <RatingOverview>
+                  <div id="overAll">
+                    <h2>{data.review_scores_rating} </h2>
+                    <h3>Overall Rating</h3>
+                  </div>
+                  <p>Latest review : {data.last_review}</p>
+                  <p> {data.number_of_reviews} total reviews</p>
+                </RatingOverview>
+                <RatingTable>
+                  <h3>Break Down</h3>
+                  <div>
+                    <p>value score:</p> <p> {data.review_scores_value}</p>
+                  </div>
+                  <div>
+                    <p>location score:</p> <p> {data.review_scores_location}</p>
+                  </div>
+                  <div>
+                    <p>cleanliness score:</p> <p> {data.review_scores_cleanliness} </p>
+                  </div>
+                  <div>
+                    <p>listing accuracy score: </p> <p>{data.review_scores_accuracy}</p>
+                  </div>
+                  <div>
+                    <p>check-in score:</p> <p> {data.review_scores_checkin}</p>
+                  </div>
+                  <div>
+                    <p>communication score: </p> <p>{data.review_scores_communication}</p>
+                  </div>
+                </RatingTable>
+              </RatingSection>
             </Section>
           </Left>
           <Right>
@@ -124,7 +133,13 @@ function ListingPage() {
                 Stay length : {data.minimum_nights}-{data.maximum_nights} nights
               </p>
               <p>Availability : {data.has_availability === 't' ? 'Available' : 'None'}</p>
-              <ReserveButton>
+              <ReserveButton
+                onClick={() => {
+                  alert(
+                    "Wow!\n\n\nYou found a feature that isn't complete yet!\nTo Claim your prize, go tell Biff that he should be better.\n\nCongratulations!"
+                  );
+                }}
+              >
                 <h4>Reserve</h4>
               </ReserveButton>
             </PriceBox>
@@ -137,7 +152,7 @@ function ListingPage() {
           />
           <MapDetails>
             <h3>{data.neighbourhood}</h3>
-            <p>{data.neighborhood_overview}</p>
+            <p>{stripHtml(data.neighborhood_overview)}</p>
           </MapDetails>
         </Section>
         <Section>
@@ -188,32 +203,54 @@ const StyleWrapped = styled.div`
   main {
     margin: auto;
     max-width: 120ch;
-    padding: 2em;
+    padding: 0.5em;
+
+    @media (min-width: 400px) {
+      padding: 2em;
+    }
   }
 `;
 
 const Footer = styled.div`
   background-color: #f7f7f7;
   height: 500px;
-  width: 100%;
   padding: 4em;
-  max-width: 120ch;
   margin: 5em auto 0;
   border-top: 1px #dddddd solid;
 `;
 
 const Split = styled.div`
   display: flex;
-  gap: 2em;
+  flex-direction: column-reverse;
+
+  gap: 4em;
+
+  @media (min-width: 800px) {
+    flex-direction: row;
+  }
 `;
 const Left = styled.div`
-  width: 70%;
+  width: 100%;
+  @media (min-width: 800px) {
+    width: 70%;
+  }
 `;
 const Right = styled.div`
-  width: 30%;
+  width: 100%;
+  position: fixed;
+  background-color: white;
+  bottom: 0;
+  left: 0;
+
+  @media (min-width: 800px) {
+    width: 30%;
+    position: relative;
+  }
+  padding: 2em 0;
+  padding-bottom: 0;
+  padding-right: 0;
 `;
 const PriceBox = styled.div`
-  margin: 2em;
   box-shadow: 0 0 10px 1px #0000006a;
   border-radius: 1em;
   border: solid 1px #dddddd;
@@ -244,6 +281,12 @@ const ReserveButton = styled.button`
 `;
 const AmenitiesList = styled.div`
   margin: 1em 0 3em;
+  display: grid;
+  grid-template-columns: 1fr;
+
+  @media (min-width: 400px) {
+    grid-template-columns: repeat(auto-fill, 50%);
+  }
 `;
 const ShowAmenities = styled.button`
   padding: 1em;
@@ -264,10 +307,15 @@ const Section = styled.div`
 `;
 
 const Map = styled.iframe`
-  width: 100%;
-  aspect-ratio: 2/1;
+  border-radius: 1em;
   border: none;
-  padding: 1em 0;
+  margin: 1em 0;
+  width: 100%;
+  aspect-ratio: 1/1;
+
+  @media (min-width: 800px) {
+    aspect-ratio: 2/1;
+  }
 `;
 
 const MapDetails = styled.div`
@@ -283,6 +331,10 @@ const HostSection = styled.div`
   display: flex;
   gap: 2em;
   justify-content: space-between;
+
+  div {
+    max-width: 60ch;
+  }
 `;
 
 const HostProfile = styled.div`
@@ -303,26 +355,31 @@ const HostBadges = styled.div`
 
 const ImageGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
   gap: 0.5em;
   overflow: hidden;
   border-radius: 1em;
 
-  * {
-    transition: filter 0.2s ease;
+  @media (min-width: 600px) {
+    grid-template-columns: repeat(2, 1fr);
   }
+
   img:hover {
     filter: brightness(0.8);
   }
 
   img {
+    transition: filter 0.2s ease;
     width: 100%;
+    height: fit-content;
     aspect-ratio: 1;
   }
   div {
     display: grid;
     gap: 0.5em;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+    @media (min-width: 600px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 `;
 
@@ -365,16 +422,42 @@ const Description = styled.p`
   padding: 1em 0;
   margin: 1em 0;
 `;
+const RatingSection = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 2em;
+  gap: 2em;
+  justify-content: space-between;
+`;
+const RatingOverview = styled.div`
+  #overAll {
+    min-width: 20ch;
+    margin-top: 2em;
+    border-bottom: solid 1px #dddddd;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+    align-items: baseline;
+    h2 {
+      font-size: 4em;
+      display: flex;
+      margin: 0;
+      padding: 0;
+      line-height: 1em;
+    }
+  }
+  p {
+    margin-top: 0.5em;
+  }
+`;
 const RatingTable = styled.div`
   display: grid;
-  padding: 1em 0;
-  margin: 1em 0;
-
-  font-weight: 100;
   color: #222222;
-  font-size: 0.9em;
-
   width: fit-content;
+
+  /* border: #8b8b8b solid 1px;
+  border-radius: 1em;
+  padding: 1em; */
 
   div:last-child {
     border-bottom: none;
