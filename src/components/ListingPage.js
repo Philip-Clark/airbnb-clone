@@ -32,7 +32,7 @@ function ListingPage() {
   const hostJoinMonth = Intl.DateTimeFormat('en-US', { month: 'long' }).format(hostJoinDateText);
 
   useEffect(() => {
-    // window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
   }, [location]);
 
   return (
@@ -89,40 +89,42 @@ function ListingPage() {
                 {amenitiesShown ? 'Show Less' : `Show all ${amenities.length} amenities`}
               </ShowAmenities>
             </Section>
-            <Section>
-              <h2>How others rated this location</h2>
-              <RatingSection>
-                <RatingOverview>
-                  <div id="overAll">
-                    <h2>{data.review_scores_rating} </h2>
-                    <h3>Overall Rating</h3>
-                  </div>
-                  <p>Latest review : {data.last_review}</p>
-                  <p> {data.number_of_reviews} total reviews</p>
-                </RatingOverview>
-                <RatingTable>
-                  <h3>Break Down</h3>
-                  <div>
-                    <p>value score:</p> <p> {data.review_scores_value}</p>
-                  </div>
-                  <div>
-                    <p>location score:</p> <p> {data.review_scores_location}</p>
-                  </div>
-                  <div>
-                    <p>cleanliness score:</p> <p> {data.review_scores_cleanliness} </p>
-                  </div>
-                  <div>
-                    <p>listing accuracy score: </p> <p>{data.review_scores_accuracy}</p>
-                  </div>
-                  <div>
-                    <p>check-in score:</p> <p> {data.review_scores_checkin}</p>
-                  </div>
-                  <div>
-                    <p>communication score: </p> <p>{data.review_scores_communication}</p>
-                  </div>
-                </RatingTable>
-              </RatingSection>
-            </Section>
+            {data.number_of_reviews != '0' && (
+              <Section>
+                <h2>How others rated this location</h2>
+                <RatingSection>
+                  <RatingOverview>
+                    <div id="overAll">
+                      <h2>{data.review_scores_rating} </h2>
+                      <h3>Overall Rating</h3>
+                    </div>
+                    <p>Latest review : {data.last_review}</p>
+                    <p> {data.number_of_reviews} total reviews</p>
+                  </RatingOverview>
+                  <RatingTable>
+                    <h3>Break Down</h3>
+                    <div>
+                      <p>value score:</p> <p> {data.review_scores_value}</p>
+                    </div>
+                    <div>
+                      <p>location score:</p> <p> {data.review_scores_location}</p>
+                    </div>
+                    <div>
+                      <p>cleanliness score:</p> <p> {data.review_scores_cleanliness} </p>
+                    </div>
+                    <div>
+                      <p>listing accuracy score: </p> <p>{data.review_scores_accuracy}</p>
+                    </div>
+                    <div>
+                      <p>check-in score:</p> <p> {data.review_scores_checkin}</p>
+                    </div>
+                    <div>
+                      <p>communication score: </p> <p>{data.review_scores_communication}</p>
+                    </div>
+                  </RatingTable>
+                </RatingSection>
+              </Section>
+            )}
           </Left>
           <Right>
             <PriceBox>
