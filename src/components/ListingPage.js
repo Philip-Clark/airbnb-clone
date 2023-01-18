@@ -164,7 +164,7 @@ function ListingPage() {
         </Section>
         <Section>
           <HostSection>
-            <div>
+            <HostAbout>
               <HostProfile>
                 <Imgix
                   imgixParams={imgixParams}
@@ -185,7 +185,7 @@ function ListingPage() {
                 <p>{data.host_listings_count} Host listings</p>
               </HostBadges>
               <p>{data.host_about}</p>
-            </div>
+            </HostAbout>
             {data.host_is_superhost === 't' && (
               <SuperHost>
                 <h3>{data.host_name} is a Superhost</h3>
@@ -220,6 +220,10 @@ const StyleWrapped = styled.div`
   #Header div {
     max-width: 120ch;
     margin: auto;
+    padding: 0.5em;
+    @media (min-width: 400px) {
+      padding: 0.5em 2em;
+    }
   }
 `;
 
@@ -250,7 +254,6 @@ const Left = styled.div`
 const Right = styled.div`
   width: 100%;
   position: fixed;
-  background-color: white;
   bottom: 0;
   left: 0;
 
@@ -266,6 +269,7 @@ const PriceBox = styled.div`
   box-shadow: 0 0 10px 1px #0000006a;
   border-radius: 1em;
   border: solid 1px #dddddd;
+  background-color: white;
   position: sticky !important;
   position: -webkit-sticky !important;
   top: 5em;
@@ -342,17 +346,21 @@ const MapDetails = styled.div`
 
 const HostSection = styled.div`
   display: flex;
+  flex-direction: row;
   gap: 2em;
+  flex-wrap: wrap;
   justify-content: space-between;
+`;
 
-  div {
-    max-width: 60ch;
-  }
+const HostAbout = styled.div`
+  max-width: 60ch;
+  flex: 1 1 40ch;
 `;
 
 const HostProfile = styled.div`
   display: flex;
   gap: 1.5em;
+
   .hostImg {
     flex: 0;
     border-radius: 1000px;
@@ -409,6 +417,8 @@ const Location = styled.p``;
 
 const SuperHost = styled.div`
   max-width: 40ch;
+  flex: 1 1 20ch;
+
   border: 1px solid #8b8b8b;
   border-radius: 1em;
   padding: 2em;
@@ -445,12 +455,12 @@ const RatingSection = styled.div`
 `;
 const RatingOverview = styled.div`
   #overAll {
-    min-width: 20ch;
     margin-top: 2em;
     border-bottom: solid 1px #dddddd;
     padding-bottom: 1em;
     margin-bottom: 1em;
     align-items: baseline;
+    flex: 1 1 20ch;
     h2 {
       font-size: 4em;
       display: flex;
