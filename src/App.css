@@ -14,13 +14,3 @@ h1 {
   text-align: center;
   font-weight: 100;
 }
-
-.mainSection {
-  padding: 3em 1em;
-}
-
-@media (min-width: 600px) {
-  .mainSection {
-    padding: 3em 6em;
-  }
-}

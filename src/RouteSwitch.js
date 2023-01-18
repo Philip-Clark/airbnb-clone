@@ -7,7 +7,7 @@ const RouteSwitch = () => {
     <HashRouter>
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="/listingPage/:id" element={<ListingPage />} />
+        <Route path="/listing/:id" element={<ListingPage />} />
       </Routes>
     </HashRouter>
   );

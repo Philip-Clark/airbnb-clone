@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { listings } from '../data/listings';
 import Imgix from 'react-imgix';
+import { listings } from '../data/listings';
+
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import { Link } from 'react-router-dom';
+import Header from './Header';
 
 const imgIXDomain = 'https://listingthumbnails.imgix.net/';
 const imgixParams = {
@@ -18,9 +20,11 @@ const stripHtml = (string) => {
 };
 
 function ListingPage() {
-  const [amenitiesShown, setAmenitiesShown] = useState(false);
   const location = useLocation();
-  const data = location.state.data;
+  const listingId = location.pathname.split('/')[2];
+  const data = listings.find((el) => el.id === listingId);
+
+  const [amenitiesShown, setAmenitiesShown] = useState(false);
   const url = imgIXDomain + data.picture_url.replace('https://a0.muscache.com/', '');
   const hostImageUrl =
     imgIXDomain + data.host_thumbnail_url.replace('https://a0.muscache.com/', '');
@@ -37,6 +41,7 @@ function ListingPage() {
 
   return (
     <StyleWrapped id="ListingPage">
+      <Header />
       <main>
         <Title>{data.name}</Title>
         <TitleSecondLine>
@@ -210,6 +215,11 @@ const StyleWrapped = styled.div`
     @media (min-width: 400px) {
       padding: 2em;
     }
+  }
+
+  #Header div {
+    max-width: 120ch;
+    margin: auto;
   }
 `;
 
