@@ -1,21 +1,25 @@
 import styled from 'styled-components';
 import Header from './Header';
 import ListingsGrid from './ListingsGrid';
-import FilterAltRoundedIcon from '@mui/icons-material/FilterAltRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
-import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
-import { useState } from 'react';
 
-const filters = new Array(80).fill('Filter');
+import { useState } from 'react';
+import { useUID } from 'react-uid';
+import filters from './filters';
+import { listings } from '../data/listings';
 
 function Home() {
   const [filterScroll, setFilterScroll] = useState(0);
+  const uid = useUID();
+  const [filterMethod, setFilterMethod] = useState();
+
   window.addEventListener('scroll', (e) => {
     if (window.scrollY > 10)
       document.getElementById('header').style.boxShadow = '0 0 10px #00000037';
     else document.getElementById('header').style.boxShadow = 'none';
   });
+
   return (
     <StyleWrapped id="Home">
       <HomeHeader id="header">
@@ -25,38 +29,47 @@ function Home() {
             onClick={() => {
               const filterList = document.getElementById('filtersList');
 
-              filterList.scrollLeft -= 300;
+              filterList.scrollLeft -= filterList.clientWidth / 2;
               setFilterScroll(filterList.scrollLeft);
             }}
           >
             <ChevronLeftRoundedIcon />
           </ScrollButton>
           <Filters id="filtersList">
-            {filters.map((text) => (
-              <div>
-                <FilterAltRoundedIcon /> <p>{text}</p>
-              </div>
+            {filters.map(({ icon, label, filterMethod }) => (
+              <FilterButton
+                key={label}
+                className={'filters'}
+                onClick={(e) => {
+                  setFilterMethod(() => filterMethod);
+                  const lastFilter = document.getElementById('active');
+                  if (lastFilter) lastFilter.id = '';
+                  e.target.id = 'active';
+                }}
+              >
+                {icon} <p>{label}</p>
+              </FilterButton>
             ))}
           </Filters>
           <ScrollButton
             onClick={() => {
               const filterList = document.getElementById('filtersList');
 
-              filterList.scrollLeft += 300;
+              filterList.scrollLeft += filterList.clientWidth / 2;
               setFilterScroll(filterList.scrollLeft);
             }}
           >
             <ChevronRightRoundedIcon />
           </ScrollButton>
 
-          <TuneButton>
+          {/* <TuneButton>
             <TuneRoundedIcon id="tune" />
             <p>Filters</p>
-          </TuneButton>
+          </TuneButton> */}
         </FilterBar>
       </HomeHeader>
       <div id="listings">
-        <ListingsGrid />
+        <ListingsGrid filterMethod={filterMethod} />
       </div>
     </StyleWrapped>
   );
@@ -87,10 +100,39 @@ const HomeHeader = styled.div`
 `;
 const FilterBar = styled.div`
   display: flex;
-  padding: 1em 4em;
+  padding: 1em 1em;
   padding-bottom: 2em;
   gap: 1.5em;
   align-items: center;
+  justify-content: center;
+
+  @media (min-width: 600px) {
+    padding: 1em 4em;
+  }
+`;
+
+const FilterButton = styled.button`
+  text-align: center;
+  background-color: white;
+  border: none;
+  color: #717171;
+
+  > * {
+    pointer-events: none;
+  }
+  p {
+    width: min-content;
+    border-bottom: solid 3px white;
+    padding-bottom: 1em;
+  }
+  &#active p {
+    border-bottom: solid 3px black;
+    color: black;
+  }
+  &:hover p {
+    border-bottom: solid 3px #dddddd;
+    color: black;
+  }
 `;
 
 const ScrollButton = styled.button`
@@ -99,7 +141,7 @@ const ScrollButton = styled.button`
   display: block;
   width: 10em;
   transition: box-shadow 0.2s ease;
-
+  background-color: white;
   &:hover {
     box-shadow: 0 0 2em #0000004b;
   }
@@ -111,6 +153,7 @@ const TuneButton = styled.button`
   padding: 1em 1em;
   gap: 1em;
   border: solid 1px #dddddd;
+  background-color: white;
   align-items: center;
   border-radius: 1em;
   #tune {
@@ -122,9 +165,6 @@ const Filters = styled.div`
   display: flex;
   gap: 3em;
   overflow-x: scroll;
-  div {
-    text-align: center;
-  }
 
   overflow-y: scroll;
   scrollbar-width: none; /* Firefox */

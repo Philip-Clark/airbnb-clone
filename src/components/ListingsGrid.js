@@ -4,11 +4,11 @@ import ListingTile from './ListingTile';
 import { listings } from '../data/listings';
 import styled from 'styled-components';
 
-export default function ListingsGrid(props) {
+export default function ListingsGrid({ filterMethod = () => 1 === 1 }) {
   const [slice, setSlice] = useState(100); //Controls the number of listings shown
   const [scrollTop, setScrollTop] = useState(0); //For scroll updates
   let columnCount = 10; //Controls how many more listings to load
-  const data = listings.slice(0, slice);
+  const data = listings.filter(filterMethod).slice(0, slice);
 
   const updateColumns = () => {
     const grid = document.getElementById('listingsGrid');
