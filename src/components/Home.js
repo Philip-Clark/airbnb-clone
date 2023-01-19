@@ -10,13 +10,13 @@ import filters from './filters';
 import { listings } from '../data/listings';
 
 function Home() {
-  const [filterScroll, setFilterScroll] = useState(0);
+  // const [filterScroll, setFilterScroll] = useState(0);
   const uid = useUID();
   const [filterMethod, setFilterMethod] = useState();
 
   window.addEventListener('scroll', (e) => {
     if (window.scrollY > 10)
-      document.getElementById('header').style.boxShadow = '0 0 10px #00000037';
+      document.getElementById('header').style.boxShadow = '0 0 1em #00000056';
     else document.getElementById('header').style.boxShadow = 'none';
   });
 
@@ -30,7 +30,7 @@ function Home() {
               const filterList = document.getElementById('filtersList');
 
               filterList.scrollLeft -= filterList.clientWidth / 2;
-              setFilterScroll(filterList.scrollLeft);
+              // setFilterScroll(filterList.scrollLeft);
             }}
           >
             <ChevronLeftRoundedIcon />
@@ -56,7 +56,7 @@ function Home() {
               const filterList = document.getElementById('filtersList');
 
               filterList.scrollLeft += filterList.clientWidth / 2;
-              setFilterScroll(filterList.scrollLeft);
+              // setFilterScroll(filterList.scrollLeft);
             }}
           >
             <ChevronRightRoundedIcon />
@@ -80,7 +80,7 @@ const StyleWrapped = styled.div`
   margin: auto;
 
   #listings {
-    margin: 2em 4em;
+    margin: 1em 2.5em;
   }
 `;
 
@@ -107,7 +107,7 @@ const FilterBar = styled.div`
   justify-content: center;
 
   @media (min-width: 600px) {
-    padding: 1em 4em;
+    padding: 0em 4em 1.5em;
   }
 `;
 
@@ -123,7 +123,7 @@ const FilterButton = styled.button`
   p {
     width: min-content;
     border-bottom: solid 3px white;
-    padding-bottom: 1em;
+    padding-bottom: 0.5em;
   }
   &#active p {
     border-bottom: solid 3px black;
@@ -138,12 +138,23 @@ const FilterButton = styled.button`
 const ScrollButton = styled.button`
   border: solid 1px #dddddd;
   border-radius: 999999999px;
-  display: block;
-  width: 10em;
+  height: 2em;
+  width: 2em;
+  margin-bottom: 1em;
+
+  color: #717171;
+  aspect-ratio: 1;
   transition: box-shadow 0.2s ease;
   background-color: white;
   &:hover {
-    box-shadow: 0 0 2em #0000004b;
+    box-shadow: 0 0 1em #0000001e;
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
   }
 `;
 

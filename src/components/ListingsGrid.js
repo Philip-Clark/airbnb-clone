@@ -10,14 +10,14 @@ export default function ListingsGrid({ filterMethod = () => 1 === 1 }) {
   let columnCount = 10; //Controls how many more listings to load
   const data = listings.filter(filterMethod).slice(0, slice);
 
-  const updateColumns = () => {
+  useEffect(() => {
     const grid = document.getElementById('listingsGrid');
     setSlice(slice + columnCount);
 
     if (!grid) return;
     const columnsString = getComputedStyle(grid).getPropertyValue('grid-template-columns');
     columnCount = columnsString.split(' ').length;
-  };
+  }, []);
 
   function currentScrollPercentage() {
     return (
@@ -26,8 +26,6 @@ export default function ListingsGrid({ filterMethod = () => 1 === 1 }) {
       100
     );
   }
-
-  window.addEventListener('resize', updateColumns);
 
   useEffect(() => {
     const onScroll = (e) => {
