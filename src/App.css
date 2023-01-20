@@ -9,6 +9,11 @@ body {
   font-family: 'Poppins', sans-serif, Arial, Helvetica, sans-serif;
 }
 
+body.noScroll {
+  overflow: hidden;
+  padding-right: 1em;
+}
+
 h1 {
   margin-bottom: 3em;
   text-align: center;

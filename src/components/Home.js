@@ -3,22 +3,29 @@ import Header from './Header';
 import ListingsGrid from './ListingsGrid';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
+import TuneRounded from '@mui/icons-material/TuneRounded';
 
 import { useState } from 'react';
 import { useUID } from 'react-uid';
 import filters from './filters';
 import { listings } from '../data/listings';
+import FilterModal from './FilterModal';
 
 function Home() {
   // const [filterScroll, setFilterScroll] = useState(0);
   const uid = useUID();
   const [filterMethod, setFilterMethod] = useState();
+  const [filterModalOpen, setFilterModalOpen] = useState(false);
 
   window.addEventListener('scroll', (e) => {
     if (window.scrollY > 10)
       document.getElementById('header').style.boxShadow = '0 0 1em #00000056';
     else document.getElementById('header').style.boxShadow = 'none';
   });
+
+  const open = () => {
+    setFilterModalOpen(true);
+  };
 
   return (
     <StyleWrapped id="Home">
@@ -28,7 +35,6 @@ function Home() {
           <ScrollButton
             onClick={() => {
               const filterList = document.getElementById('filtersList');
-
               filterList.scrollLeft -= filterList.clientWidth / 2;
               // setFilterScroll(filterList.scrollLeft);
             }}
@@ -54,23 +60,22 @@ function Home() {
           <ScrollButton
             onClick={() => {
               const filterList = document.getElementById('filtersList');
-
               filterList.scrollLeft += filterList.clientWidth / 2;
               // setFilterScroll(filterList.scrollLeft);
             }}
           >
             <ChevronRightRoundedIcon />
           </ScrollButton>
-
-          {/* <TuneButton>
-            <TuneRoundedIcon id="tune" />
+          <TuneButton onClick={open}>
+            <TuneRounded id="tune" />
             <p>Filters</p>
-          </TuneButton> */}
+          </TuneButton>
         </FilterBar>
       </HomeHeader>
       <div id="listings">
         <ListingsGrid filterMethod={filterMethod} />
       </div>
+      <FilterModal opened={filterModalOpen} setModalOpen={setFilterModalOpen} />
     </StyleWrapped>
   );
 }
@@ -78,7 +83,6 @@ function Home() {
 const StyleWrapped = styled.div`
   max-width: 190ch;
   margin: auto;
-
   #listings {
     margin: 1em 2.5em;
   }

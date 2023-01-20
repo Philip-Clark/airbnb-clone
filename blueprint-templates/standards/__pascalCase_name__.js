@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 function {{pascalCase name}} () {
   return (
-    <StyleWrapped id="{{pascalCase name}}">
+    <StyleWrapped className="{{pascalCase name}}">
       <h2>Template component</h2>
     </StyleWrapped>
   );

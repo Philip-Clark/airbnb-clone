@@ -11,7 +11,11 @@ import CountertopsIcon from '@mui/icons-material/Countertops'; //has kitchen
 import FavoriteIcon from '@mui/icons-material/Favorite'; //popular
 import DomainDisabledIcon from '@mui/icons-material/DomainDisabled'; //secluded location
 import FilterAltRoundedIcon from '@mui/icons-material/FilterAltRounded';
-
+import TodayIcon from '@mui/icons-material/Today'; //short stays
+import DinnerDiningIcon from '@mui/icons-material/DinnerDining'; //dinning nearby
+import NetworkCheckIcon from '@mui/icons-material/NetworkCheck'; //Internet connectivity
+import GolfCourseIcon from '@mui/icons-material/GolfCourse'; //Golfing nearby
+import SolarPowerIcon from '@mui/icons-material/SolarPower'; //Solar power
 const filters = [
   {
     icon: <SuperHost />,
@@ -25,19 +29,24 @@ const filters = [
   },
   {
     icon: <FiveStar />,
-    label: 'Five Star',
+    label: 'Highly Rated',
     filterMethod: (e) => parseFloat(e.review_scores_rating) >= 4.5,
   },
   {
     icon: <SavingsIcon />,
     label: 'Great Value',
     filterMethod: (e) =>
-      parseFloat(e.review_scores_value) >= 4.5 && parseFloat(e.price.replace('$', '')) <= 200.0,
+      parseFloat(e.review_scores_value) >= 4.0 && parseFloat(e.price.replace(/[$,]/g, '')) <= 200,
   },
   {
     icon: <DateRangeIcon />,
     label: 'Long Stays',
     filterMethod: (e) => parseFloat(e.maximum_nights) >= 14,
+  },
+  {
+    icon: <TodayIcon />,
+    label: 'Short Stays',
+    filterMethod: (e) => parseInt(e.minimum_nights) <= 3,
   },
   {
     icon: <BeachAccessIcon />,
@@ -88,25 +97,48 @@ const filters = [
       e.neighborhood_overview.toLowerCase().includes('secluded'),
   },
 
-  { icon: <FilterAltRoundedIcon />, label: 'Place Holder', filterMethod: (e) => 1 === 1 },
-  { icon: <FilterAltRoundedIcon />, label: 'Place Holder', filterMethod: (e) => 1 === 1 },
-  { icon: <FilterAltRoundedIcon />, label: 'Place Holder', filterMethod: (e) => 1 === 1 },
-  { icon: <FilterAltRoundedIcon />, label: 'Place Holder', filterMethod: (e) => 1 === 1 },
-  { icon: <FilterAltRoundedIcon />, label: 'Place Holder', filterMethod: (e) => 1 === 1 },
-  { icon: <FilterAltRoundedIcon />, label: 'Place Holder', filterMethod: (e) => 1 === 1 },
-  { icon: <FilterAltRoundedIcon />, label: 'Place Holder', filterMethod: (e) => 1 === 1 },
-  { icon: <FilterAltRoundedIcon />, label: 'Place Holder', filterMethod: (e) => 1 === 1 },
-  { icon: <FilterAltRoundedIcon />, label: 'Place Holder', filterMethod: (e) => 1 === 1 },
-  { icon: <FilterAltRoundedIcon />, label: 'Place Holder', filterMethod: (e) => 1 === 1 },
-  { icon: <FilterAltRoundedIcon />, label: 'Place Holder', filterMethod: (e) => 1 === 1 },
-  { icon: <FilterAltRoundedIcon />, label: 'Place Holder', filterMethod: (e) => 1 === 1 },
-  { icon: <FilterAltRoundedIcon />, label: 'Place Holder', filterMethod: (e) => 1 === 1 },
-  { icon: <FilterAltRoundedIcon />, label: 'Place Holder', filterMethod: (e) => 1 === 1 },
-  { icon: <FilterAltRoundedIcon />, label: 'Place Holder', filterMethod: (e) => 1 === 1 },
-  { icon: <FilterAltRoundedIcon />, label: 'Place Holder', filterMethod: (e) => 1 === 1 },
-  { icon: <FilterAltRoundedIcon />, label: 'Place Holder', filterMethod: (e) => 1 === 1 },
-  { icon: <FilterAltRoundedIcon />, label: 'Place Holder', filterMethod: (e) => 1 === 1 },
-  { icon: <FilterAltRoundedIcon />, label: 'Place Holder', filterMethod: (e) => 1 === 1 },
+  {
+    icon: <DinnerDiningIcon />,
+    label: 'Near Restaurants',
+    filterMethod: (e) =>
+      e.name.toLowerCase().includes('restaurants') ||
+      e.description.toLowerCase().includes('restaurants') ||
+      e.amenities.toLowerCase().includes('restaurants') ||
+      e.neighborhood_overview.toLowerCase().includes('restaurants'),
+  },
+
+  {
+    icon: <NetworkCheckIcon />,
+    label: 'Internet Services',
+    filterMethod: (e) =>
+      e.name.toLowerCase().includes('internet') ||
+      e.description.toLowerCase().includes('internet') ||
+      e.amenities.toLowerCase().includes('internet') ||
+      e.neighborhood_overview.toLowerCase().includes('internet') ||
+      e.name.toLowerCase().includes('wifi') ||
+      e.description.toLowerCase().includes('wifi') ||
+      e.amenities.toLowerCase().includes('wifi') ||
+      e.neighborhood_overview.toLowerCase().includes('wifi'),
+  },
+  {
+    icon: <GolfCourseIcon />,
+    label: 'Near Golfing',
+    filterMethod: (e) =>
+      e.name.toLowerCase().includes('golf') ||
+      e.description.toLowerCase().includes('golf') ||
+      e.amenities.toLowerCase().includes('golf') ||
+      e.neighborhood_overview.toLowerCase().includes('golf'),
+  },
+  {
+    icon: <SolarPowerIcon />,
+    label: 'Solar Power',
+    filterMethod: (e) =>
+      e.name.toLowerCase().includes('solar') ||
+      e.description.toLowerCase().includes('solar') ||
+      e.amenities.toLowerCase().includes('solar') ||
+      e.neighborhood_overview.toLowerCase().includes('solar'),
+  },
+
   { icon: <FilterAltRoundedIcon />, label: 'Place Holder', filterMethod: (e) => 1 === 1 },
   { icon: <FilterAltRoundedIcon />, label: 'Place Holder', filterMethod: (e) => 1 === 1 },
   { icon: <FilterAltRoundedIcon />, label: 'Place Holder', filterMethod: (e) => 1 === 1 },
