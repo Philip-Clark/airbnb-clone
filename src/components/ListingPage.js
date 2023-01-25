@@ -8,7 +8,7 @@ import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import { Link } from 'react-router-dom';
 import Header from './Header';
 
-const imgIXDomain = 'https://listingthumbnails.imgix.net/';
+const imgIXDomain = 'https://airbnbclone.imgix.net/';
 const imgixParams = {
   q: '100',
   ar: '1:1',
@@ -22,14 +22,14 @@ const stripHtml = (string) => {
 function ListingPage() {
   const location = useLocation();
   const listingId = location.pathname.split('/')[2];
-  const data = listings.find((el) => el.id === listingId);
+  const data = listings.find((el) => el.id.toString() === listingId);
 
   const [amenitiesShown, setAmenitiesShown] = useState(false);
   const url = imgIXDomain + data.picture_url.replace('https://a0.muscache.com/', '');
   const hostImageUrl =
     imgIXDomain + data.host_thumbnail_url.replace('https://a0.muscache.com/', '');
   const [amenitiesSlice, setAmenitiesSlice] = useState(6);
-  const amenities = JSON.parse(data.amenities);
+  const amenities = data.amenities;
 
   const hostJoinDateText = new Date(data.host_since);
   const hostJoinYear = hostJoinDateText.getFullYear();

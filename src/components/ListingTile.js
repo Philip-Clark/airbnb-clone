@@ -3,7 +3,7 @@ import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-const imgIXDomain = 'https://listingthumbnails.imgix.net/';
+const imgIXDomain = 'https://airbnbclone.imgix.net/';
 const imgixParams = {
   q: '0',
   auto: 'compress,format',

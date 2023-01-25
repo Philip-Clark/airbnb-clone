@@ -54,7 +54,7 @@ const filters = [
     filterMethod: (e) =>
       e.name.toLowerCase().includes('beach') ||
       e.description.toLowerCase().includes('beach') ||
-      e.amenities.toLowerCase().includes('beach') ||
+      e.amenities.includes('beach') ||
       e.neighborhood_overview.toLowerCase().includes('beach'),
   },
   {
@@ -67,15 +67,14 @@ const filters = [
     label: 'Near Pool',
     filterMethod: (e) =>
       e.description.toLowerCase().includes('pool') ||
-      e.amenities.toLowerCase().includes('pool') ||
+      e.amenities.includes('pool') ||
       e.neighborhood_overview.toLowerCase().includes('pool'),
   },
   {
     icon: <CountertopsIcon />,
     label: 'Has Kitchen',
     filterMethod: (e) =>
-      e.description.toLowerCase().includes('kitchen') ||
-      e.amenities.toLowerCase().includes('kitchen'),
+      e.description.toLowerCase().includes('kitchen') || e.amenities.includes('kitchen'),
   },
   {
     icon: <FavoriteIcon />,
@@ -93,7 +92,7 @@ const filters = [
     filterMethod: (e) =>
       e.name.toLowerCase().includes('secluded') ||
       e.description.toLowerCase().includes('secluded') ||
-      e.amenities.toLowerCase().includes('secluded') ||
+      e.amenities.includes('secluded') ||
       e.neighborhood_overview.toLowerCase().includes('secluded'),
   },
 
@@ -103,7 +102,7 @@ const filters = [
     filterMethod: (e) =>
       e.name.toLowerCase().includes('restaurants') ||
       e.description.toLowerCase().includes('restaurants') ||
-      e.amenities.toLowerCase().includes('restaurants') ||
+      e.amenities.includes('restaurants') ||
       e.neighborhood_overview.toLowerCase().includes('restaurants'),
   },
 
@@ -113,11 +112,11 @@ const filters = [
     filterMethod: (e) =>
       e.name.toLowerCase().includes('internet') ||
       e.description.toLowerCase().includes('internet') ||
-      e.amenities.toLowerCase().includes('internet') ||
+      e.amenities.includes('internet') ||
       e.neighborhood_overview.toLowerCase().includes('internet') ||
       e.name.toLowerCase().includes('wifi') ||
       e.description.toLowerCase().includes('wifi') ||
-      e.amenities.toLowerCase().includes('wifi') ||
+      e.amenities.includes('wifi') ||
       e.neighborhood_overview.toLowerCase().includes('wifi'),
   },
   {
@@ -126,7 +125,7 @@ const filters = [
     filterMethod: (e) =>
       e.name.toLowerCase().includes('golf') ||
       e.description.toLowerCase().includes('golf') ||
-      e.amenities.toLowerCase().includes('golf') ||
+      e.amenities.includes('golf') ||
       e.neighborhood_overview.toLowerCase().includes('golf'),
   },
   {
@@ -135,7 +134,7 @@ const filters = [
     filterMethod: (e) =>
       e.name.toLowerCase().includes('solar') ||
       e.description.toLowerCase().includes('solar') ||
-      e.amenities.toLowerCase().includes('solar') ||
+      e.amenities.includes('solar') ||
       e.neighborhood_overview.toLowerCase().includes('solar'),
   },
 
