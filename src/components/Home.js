@@ -10,12 +10,17 @@ import { useUID } from 'react-uid';
 import filters from './filters';
 import { listings } from '../data/listings';
 import FilterModal from './FilterModal';
+import { useEffect } from 'react';
 
 function Home() {
   // const [filterScroll, setFilterScroll] = useState(0);
   const uid = useUID();
   const [filterMethod, setFilterMethod] = useState();
   const [filterModalOpen, setFilterModalOpen] = useState(false);
+  const [data, setData] = useState(listings);
+  useEffect(() => {
+    if (filterMethod) setData(listings.filter(filterMethod));
+  }, [filterMethod]);
 
   window.addEventListener('scroll', (e) => {
     if (window.scrollY > 10)
@@ -73,9 +78,14 @@ function Home() {
         </FilterBar>
       </HomeHeader>
       <div id="listings">
-        <ListingsGrid filterMethod={filterMethod} />
+        <ListingsGrid inData={data} />
       </div>
-      <FilterModal opened={filterModalOpen} setModalOpen={setFilterModalOpen} />
+      <FilterModal
+        opened={filterModalOpen}
+        setModalOpen={setFilterModalOpen}
+        setData={setData}
+        data={data}
+      />
     </StyleWrapped>
   );
 }

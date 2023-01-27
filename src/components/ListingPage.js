@@ -3,7 +3,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Imgix from 'react-imgix';
 import { listings } from '../data/listings';
-
+import profileIcon from '../images/standardProfile.png';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import { Link } from 'react-router-dom';
 import Header from './Header';
@@ -26,8 +26,6 @@ function ListingPage() {
 
   const [amenitiesShown, setAmenitiesShown] = useState(false);
   const url = imgIXDomain + data.picture_url.replace('https://a0.muscache.com/', '');
-  const hostImageUrl =
-    imgIXDomain + data.host_thumbnail_url.replace('https://a0.muscache.com/', '');
   const [amenitiesSlice, setAmenitiesSlice] = useState(6);
   const amenities = data.amenities;
 
@@ -70,12 +68,7 @@ function ListingPage() {
                   {data.bathrooms_text}
                 </p>
               </div>
-              <Imgix
-                imgixParams={imgixParams}
-                className="hostImg"
-                src={hostImageUrl}
-                sizes="250px"
-              />
+              <HostImage src={profileIcon} />
             </BriefDetails>
             <Description>{stripHtml(data.description)}</Description>
             <Section>
@@ -166,12 +159,7 @@ function ListingPage() {
           <HostSection>
             <HostAbout>
               <HostProfile>
-                <Imgix
-                  imgixParams={imgixParams}
-                  className="hostImg"
-                  src={hostImageUrl}
-                  sizes="250px"
-                />
+                <HostImage src={profileIcon} />
                 <div>
                   <h3>Hosted by {data.host_name}</h3>
                   <p>
@@ -264,6 +252,15 @@ const Right = styled.div`
   padding: 2em 0;
   padding-bottom: 0;
   padding-right: 0;
+`;
+
+const HostImage = styled.img`
+  flex: 0;
+  border-radius: 1000px;
+  border: solid 1px #dddddd;
+  padding: 2px;
+  height: 4em;
+  aspect-ratio: 1;
 `;
 const PriceBox = styled.div`
   box-shadow: 0 0 10px 1px #0000006a;
@@ -360,12 +357,6 @@ const HostAbout = styled.div`
 const HostProfile = styled.div`
   display: flex;
   gap: 1.5em;
-
-  .hostImg {
-    flex: 0;
-    border-radius: 1000px;
-    height: 4em;
-  }
 `;
 
 const HostBadges = styled.div`
@@ -434,12 +425,6 @@ const BriefDetails = styled.div`
   border-bottom: 1px #dddddd solid;
   padding: 1em 0;
   margin: 1em 0;
-
-  .hostImg {
-    flex: 0;
-    border-radius: 1000px;
-    height: 4em;
-  }
 `;
 const Description = styled.p`
   padding: 1em 0;

@@ -139,12 +139,6 @@ const filters = [
   },
 
   { icon: <FilterAltRoundedIcon />, label: 'Place Holder', filterMethod: (e) => 1 === 1 },
-  { icon: <FilterAltRoundedIcon />, label: 'Place Holder', filterMethod: (e) => 1 === 1 },
-  { icon: <FilterAltRoundedIcon />, label: 'Place Holder', filterMethod: (e) => 1 === 1 },
-  { icon: <FilterAltRoundedIcon />, label: 'Place Holder', filterMethod: (e) => 1 === 1 },
-  { icon: <FilterAltRoundedIcon />, label: 'Place Holder', filterMethod: (e) => 1 === 1 },
-  { icon: <FilterAltRoundedIcon />, label: 'Place Holder', filterMethod: (e) => 1 === 1 },
-  { icon: <FilterAltRoundedIcon />, label: 'Place Holder', filterMethod: (e) => 1 === 1 },
 ];
 
 export default filters;

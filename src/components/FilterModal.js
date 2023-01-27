@@ -1,8 +1,24 @@
 import styled from 'styled-components';
 import CloseIcon from '@mui/icons-material/Close';
 import { createRef, useEffect } from 'react';
+import PriceRangeFilter from './PriceRangeFilter';
+import { useState } from 'react';
+import { listings } from '../data/listings';
 
-function FilterModal({ opened, setModalOpen }) {
+const filterByPrice = (values, data) => {
+  const filtered = data.filter(
+    (e) =>
+      parseFloat(e.price.replace(/[$,]/g, '')) >= values.min &&
+      parseFloat(e.price.replace(/[$,]/g, '')) <= values.max
+  );
+
+  return filtered;
+};
+
+function FilterModal({ opened, setModalOpen, setData, data }) {
+  const [priceRange, setPriceRange] = useState({ min: -Infinity, max: Infinity });
+  const count = filterByPrice(priceRange, listings).length;
+
   if (opened) document.body.classList.add('noScroll');
   else document.body.classList.remove('noScroll');
 
@@ -13,6 +29,10 @@ function FilterModal({ opened, setModalOpen }) {
   }, [opened]);
 
   const close = () => {
+    setModalOpen(false);
+  };
+  const showFiltered = () => {
+    setData(filterByPrice(priceRange, listings));
     setModalOpen(false);
   };
 
@@ -28,6 +48,7 @@ function FilterModal({ opened, setModalOpen }) {
         <FiltersSection>
           <PriceRange>
             <h2>Price range</h2>
+            <PriceRangeFilter setPriceRange={setPriceRange} />
           </PriceRange>
           <PlaceType>
             <h2>Type of place</h2>
@@ -56,7 +77,7 @@ function FilterModal({ opened, setModalOpen }) {
         </FiltersSection>
         <BottomBar>
           <ClearButton></ClearButton>
-          <ShowButton></ShowButton>
+          <ShowButton onClick={showFiltered}>{`Show ${count} homes`}</ShowButton>
         </BottomBar>
       </Content>
     </StyleWrapped>
@@ -73,7 +94,7 @@ const StyleWrapped = styled.div`
   margin: 0;
   padding: 0;
   pointer-events: none;
-  background-color: #4242428f;
+  background-color: #424242b6;
   transition: opacity 0.3s ease;
 
   &[open] {
@@ -96,13 +117,12 @@ const Content = styled.div`
   box-shadow: 0 0 1em #00000042;
   border: solid 1px #dddddd;
   margin: 2em auto;
-  max-width: 110ch;
+  max-width: 80ch;
   height: calc(100% - 5em);
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  color: #222222;
 
   @media (min-width: 800px) {
     //adding a margin of 2em to each side
@@ -112,7 +132,7 @@ const Content = styled.div`
 
 const TitleBar = styled.div`
   display: flex;
-  padding: 2em;
+  padding: 1em;
   border-bottom: solid 1px #dddddd;
 `;
 const CloseButton = styled.button`
@@ -133,7 +153,7 @@ const Title = styled.h3`
 `;
 const FiltersSection = styled.div`
   overflow-y: scroll;
-  padding: 0 1em;
+  padding: 0 1.5em;
   > div {
     border-bottom: #dddddd solid 1px;
     padding: 2em 0;
@@ -142,7 +162,11 @@ const FiltersSection = styled.div`
     font-weight: 500;
   }
 `;
-const PriceRange = styled.div``;
+const PriceRange = styled.div`
+  .PriceRangeFilter {
+    padding: 3em 2em;
+  }
+`;
 const PlaceType = styled.div``;
 const SleepingArrangements = styled.div``;
 const PropertyType = styled.div``;
