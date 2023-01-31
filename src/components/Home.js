@@ -15,12 +15,12 @@ import { useEffect } from 'react';
 function Home() {
   // const [filterScroll, setFilterScroll] = useState(0);
   const uid = useUID();
-  const [filterMethod, setFilterMethod] = useState();
+  const [quickFilter, setQuickFilter] = useState();
   const [filterModalOpen, setFilterModalOpen] = useState(false);
   const [data, setData] = useState(listings);
   useEffect(() => {
-    if (filterMethod) setData(listings.filter(filterMethod));
-  }, [filterMethod]);
+    if (quickFilter) setData(listings.filter(quickFilter));
+  }, [quickFilter]);
 
   window.addEventListener('scroll', (e) => {
     if (window.scrollY > 10)
@@ -52,7 +52,7 @@ function Home() {
                 key={label}
                 className={'filters'}
                 onClick={(e) => {
-                  setFilterMethod(() => filterMethod);
+                  setQuickFilter(() => filterMethod);
                   const lastFilter = document.getElementById('active');
                   if (lastFilter) lastFilter.id = '';
                   e.target.id = 'active';

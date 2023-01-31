@@ -214,9 +214,14 @@ const StyleWrapped = styled.div`
     outline: none;
     z-index: 2;
     box-shadow: 0 2px 2px #dbdbdb;
+    cursor: pointer;
   }
   .DefaultHandle_handle:focus {
     box-shadow: #abc4e8 0 0 1px 1px;
+  }
+
+  .DefaultHandle_handle:active {
+    transform: scale(1.05);
   }
   .DefaultHandle_handle:after {
     content: '';
