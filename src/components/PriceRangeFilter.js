@@ -33,15 +33,12 @@ steps.forEach((step) => {
 });
 
 const diff = max - min;
-console.log({ min: min, max: max, diff: diff, steps: diff / 10 });
 
 const priceCounts = Object.keys(prices).map((k) => {
   return { price: k, count: prices[k] };
 });
 
 const data = priceCounts;
-
-console.log({ data });
 
 let width = 700;
 const height = 80;
@@ -75,7 +72,6 @@ function PriceRangeFilter({ setPriceRange }) {
   const setLower = (e) => updateValues([parseInt(e.target.value), values[1]]);
 
   const updateValues = (newVals) => {
-    console.log([...newVals]);
     setValues(newVals);
     setPriceRange({ min: newVals[0], max: newVals[1] });
   };

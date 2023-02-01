@@ -20,7 +20,6 @@ function Type({ title, Icon, setPropertyTypes, propertyTypes }) {
   );
 }
 function PropertyTypeFilter({ setPropertyTypes, propertyTypes }) {
-  console.log(propertyTypes);
   return (
     <StyleWrapped className="PropertyTypeFilter">
       <Type
@@ -58,6 +57,7 @@ const StyleWrapped = styled.div`
   grid-template-columns: repeat(auto-fill, clamp(8em, 22%, 100%));
 
   button {
+    background: transparent;
     position: relative;
     padding: 1em;
     flex: 1;

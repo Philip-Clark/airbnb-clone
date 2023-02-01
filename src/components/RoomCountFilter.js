@@ -44,6 +44,7 @@ const CountList = styled.div`
     border-radius: 900rem;
     border: 1px solid #dddddd;
     padding: 0.8em 2em;
+    background-color: transparent;
     &[active='true'] {
       background-color: #222222;
       color: white;

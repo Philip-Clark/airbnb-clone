@@ -7,6 +7,7 @@ import { listings } from '../data/listings';
 import PlaceTypeFilter from './PlaceTypeFilter';
 import RoomCountFilter from './RoomCountFilter';
 import PropertyTypeFilter from './PropertyTypeFilter';
+import AmenitiesFilter from './AmenitiesFilter';
 
 const filterByPrice = (data, values) => {
   const filtered = data.filter(
@@ -31,6 +32,12 @@ const filterByRoomAndBedCount = (data, bathRooms, bedRooms, beds) => {
     filtered = filtered.filter((item) => parseInt(item.bathrooms_text.split(' ')[0]) >= bathRooms);
   if (beds !== 'Any') filtered = filtered.filter((item) => item.beds >= beds);
 
+  return filtered;
+};
+
+const filterByAmenities = (data, values) => {
+  if (values.length === 0) return data;
+  let filtered = data.filter((item) => values.every((amenity) => item.amenities.includes(amenity)));
   return filtered;
 };
 
@@ -67,6 +74,7 @@ function FilterModal({ opened, setModalOpen, setData, data }) {
   const [bedsCount, setBedsCount] = useState('Any');
   const [bathroomCount, setBathroomCount] = useState('Any');
   const [propertyTypes, setPropertyTypes] = useState([]);
+  const [amenitiesFilter, setAmenitiesFilter] = useState([]);
 
   const [filteredData, setFilteredData] = useState([]);
   let count = filteredData.length;
@@ -82,9 +90,10 @@ function FilterModal({ opened, setModalOpen, setData, data }) {
     tempData = filterByType(tempData, types);
     tempData = filterByRoomAndBedCount(tempData, bathroomCount, bedroomCount, bedsCount);
     tempData = filterByPropertyType(tempData, propertyTypes);
+    tempData = filterByAmenities(tempData, amenitiesFilter);
 
     setFilteredData(tempData);
-  }, [priceRange, types, bathroomCount, bedroomCount, bedsCount, propertyTypes]);
+  }, [priceRange, types, bathroomCount, bedroomCount, bedsCount, propertyTypes, amenitiesFilter]);
 
   useEffect(() => {
     object.current.style.pointerEvents = opened ? 'all' : 'none';
@@ -99,6 +108,12 @@ function FilterModal({ opened, setModalOpen, setData, data }) {
   };
   const clearFilters = () => {
     setPriceRange({ min: -Infinity, max: Infinity });
+    setTypes([]);
+    setBedroomCount('Any');
+    setBedsCount('Any');
+    setBathroomCount('Any');
+    setPropertyTypes([]);
+    setAmenitiesFilter([]);
   };
 
   return (
@@ -110,7 +125,7 @@ function FilterModal({ opened, setModalOpen, setData, data }) {
           </CloseButton>
           <Title>Filters</Title>
         </TitleBar>
-        <FiltersSection>
+        <FiltersSection id="ScrollSection">
           <PriceRange>
             <h2>Price range</h2>
             <p>The average nightly price is ${avgPrice}</p>
@@ -136,6 +151,10 @@ function FilterModal({ opened, setModalOpen, setData, data }) {
           </PropertyType>
           <Amenities>
             <h2>Amenities</h2>
+            <AmenitiesFilter
+              amenitiesFilter={amenitiesFilter}
+              setAmenitiesFilter={setAmenitiesFilter}
+            />
           </Amenities>
           <BookingOptions>
             <h2>Booking options</h2>

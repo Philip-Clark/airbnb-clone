@@ -73,7 +73,7 @@ function ListingPage() {
             <Description>{stripHtml(data.description)}</Description>
             <Section>
               <h2>What this place offers</h2>
-              <AmenitiesList>
+              <AmenitiesList id="amenitiesList">
                 {amenities.slice(0, amenitiesSlice).map((item) => (
                   <Amenity> · {item}</Amenity>
                 ))}
@@ -82,6 +82,13 @@ function ListingPage() {
                 onClick={() => {
                   setAmenitiesShown(!amenitiesShown);
                   setAmenitiesSlice(amenitiesShown ? 6 : 1000);
+                  document
+                    .getElementById('amenitiesList')
+                    .parentNode.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'start',
+                      inline: 'nearest',
+                    });
                 }}
               >
                 {amenitiesShown ? 'Show Less' : `Show all ${amenities.length} amenities`}
