@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { listings } from '../data/listings';
 import PlaceTypeFilter from './PlaceTypeFilter';
 import RoomCountFilter from './RoomCountFilter';
+import PropertyTypeFilter from './PropertyTypeFilter';
 
 const filterByPrice = (data, values) => {
   const filtered = data.filter(
@@ -33,6 +34,21 @@ const filterByRoomAndBedCount = (data, bathRooms, bedRooms, beds) => {
   return filtered;
 };
 
+const filterByPropertyType = (data, values) => {
+  let filtered = data;
+  if (values.length === 0) return data;
+
+  filtered = data.filter(
+    (e) =>
+      values.some((type) => e.room_type.toLowerCase().includes(type.toLowerCase())) ||
+      values.some((type) => e.property_type.toLowerCase().includes(type.toLowerCase())) ||
+      values.some((type) => e.name.toLowerCase().includes(type.toLowerCase())) ||
+      values.some((type) => e.description.toLowerCase().includes(type.toLowerCase()))
+  );
+
+  return filtered;
+};
+
 const getAvg = () => {
   let totalPrice = 0;
   let count = 0;
@@ -50,6 +66,7 @@ function FilterModal({ opened, setModalOpen, setData, data }) {
   const [bedroomCount, setBedroomCount] = useState('Any');
   const [bedsCount, setBedsCount] = useState('Any');
   const [bathroomCount, setBathroomCount] = useState('Any');
+  const [propertyTypes, setPropertyTypes] = useState([]);
 
   const [filteredData, setFilteredData] = useState([]);
   let count = filteredData.length;
@@ -64,9 +81,10 @@ function FilterModal({ opened, setModalOpen, setData, data }) {
     let tempData = filterByPrice(listings, priceRange);
     tempData = filterByType(tempData, types);
     tempData = filterByRoomAndBedCount(tempData, bathroomCount, bedroomCount, bedsCount);
+    tempData = filterByPropertyType(tempData, propertyTypes);
 
     setFilteredData(tempData);
-  }, [priceRange, types, bathroomCount, bedroomCount, bedsCount]);
+  }, [priceRange, types, bathroomCount, bedroomCount, bedsCount, propertyTypes]);
 
   useEffect(() => {
     object.current.style.pointerEvents = opened ? 'all' : 'none';
@@ -114,6 +132,7 @@ function FilterModal({ opened, setModalOpen, setData, data }) {
           </SleepingArrangements>
           <PropertyType>
             <h2>Property type</h2>
+            <PropertyTypeFilter propertyTypes={propertyTypes} setPropertyTypes={setPropertyTypes} />
           </PropertyType>
           <Amenities>
             <h2>Amenities</h2>
@@ -251,7 +270,11 @@ const PlaceType = styled.div`
   }
 `;
 const SleepingArrangements = styled.div``;
-const PropertyType = styled.div``;
+const PropertyType = styled.div`
+  h2 {
+    margin-bottom: 1em;
+  }
+`;
 const Amenities = styled.div``;
 const BookingOptions = styled.div``;
 const Accessibility = styled.div``;
