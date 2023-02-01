@@ -52,8 +52,10 @@ function PropertyTypeFilter({ setPropertyTypes, propertyTypes }) {
 }
 
 const StyleWrapped = styled.div`
-  display: flex;
+  display: grid;
   gap: 1em;
+  width: 100%;
+  grid-template-columns: repeat(auto-fill, clamp(8em, 22%, 100%));
 
   button {
     position: relative;
@@ -62,9 +64,8 @@ const StyleWrapped = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-
     text-align: left;
-    aspect-ratio: 1/0.7;
+    height: 9em;
     border-radius: 1em;
     border: solid 1px #909090;
 

@@ -37,6 +37,8 @@ const Title = styled.p`
 const CountList = styled.div`
   display: flex;
   gap: 0.5em;
+  width: 100%;
+  overflow-x: scroll;
 
   button {
     border-radius: 900rem;
@@ -51,6 +53,16 @@ const CountList = styled.div`
       border: 1px solid black;
     }
   }
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 `;
 
 export default RoomCountFilter;
