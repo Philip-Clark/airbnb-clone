@@ -67,7 +67,7 @@ const getAvg = () => {
   return totalPrice / count;
 };
 
-function FilterModal({ opened, setModalOpen, setData, data }) {
+function FilterModal({ opened, setModalOpen, setData, data, setFilterCount }) {
   const [priceRange, setPriceRange] = useState({ min: -Infinity, max: Infinity });
   const [types, setTypes] = useState([]);
   const [bedroomCount, setBedroomCount] = useState('Any');
@@ -77,6 +77,7 @@ function FilterModal({ opened, setModalOpen, setData, data }) {
   const [amenitiesFilter, setAmenitiesFilter] = useState([]);
 
   const [filteredData, setFilteredData] = useState([]);
+
   let count = filteredData.length;
   const avgPrice = parseInt(getAvg());
   if (opened) document.body.classList.add('noScroll');
@@ -91,6 +92,16 @@ function FilterModal({ opened, setModalOpen, setData, data }) {
     tempData = filterByRoomAndBedCount(tempData, bathroomCount, bedroomCount, bedsCount);
     tempData = filterByPropertyType(tempData, propertyTypes);
     tempData = filterByAmenities(tempData, amenitiesFilter);
+
+    setFilterCount(
+      (priceRange.min != -Infinity && 1) +
+        types.length +
+        (bathroomCount !== 'Any' && 1) +
+        (bedroomCount !== 'Any' && 1) +
+        (bedsCount !== 'Any' && 1) +
+        propertyTypes.length +
+        amenitiesFilter.length
+    );
 
     setFilteredData(tempData);
   }, [priceRange, types, bathroomCount, bedroomCount, bedsCount, propertyTypes, amenitiesFilter]);

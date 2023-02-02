@@ -18,6 +18,7 @@ function Home() {
   const [quickFilter, setQuickFilter] = useState();
   const [filterModalOpen, setFilterModalOpen] = useState(false);
   const [data, setData] = useState(listings);
+  const [filterCount, setFilterCount] = useState(0);
   useEffect(() => {
     if (quickFilter) setData(listings.filter(quickFilter));
   }, [quickFilter]);
@@ -56,6 +57,7 @@ function Home() {
                   const lastFilter = document.getElementById('active');
                   if (lastFilter) lastFilter.id = '';
                   e.target.id = 'active';
+                  setFilterCount(0);
                 }}
               >
                 {icon} <p>{label}</p>
@@ -71,9 +73,11 @@ function Home() {
           >
             <ChevronRightRoundedIcon />
           </ScrollButton>
-          <TuneButton onClick={open}>
+          <TuneButton onClick={open} activeFilters={(filterCount !== 0).toString()}>
             <TuneRounded id="tune" />
             <p>Filters</p>
+            {filterCount > 0 && <div id="boldBorder" />}
+            {filterCount > 0 && <p id="filterCount">{filterCount}</p>}
           </TuneButton>
         </FilterBar>
       </HomeHeader>
@@ -85,6 +89,7 @@ function Home() {
         setModalOpen={setFilterModalOpen}
         setData={setData}
         data={data}
+        setFilterCount={setFilterCount}
       />
     </StyleWrapped>
   );
@@ -176,6 +181,7 @@ const TuneButton = styled.button`
   display: flex;
   height: fit-content;
   padding: 1em 1em;
+  position: relative;
   gap: 1em;
   border: solid 1px #dddddd;
   background-color: white;
@@ -183,6 +189,30 @@ const TuneButton = styled.button`
   border-radius: 1em;
   #tune {
     color: #222222;
+  }
+
+  #filterCount {
+    position: absolute;
+    top: -0.5em;
+    right: -0.5em;
+    width: 1em;
+    height: 1em;
+    font-size: 0.8em;
+    padding: 0.3em;
+    border-radius: 9000em;
+    background-color: #222222;
+    color: white;
+  }
+
+  #boldBorder {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(100% - 2px);
+    height: calc(100% - 2px);
+    border-radius: inherit;
+    border: #222222 solid 2px;
   }
 `;
 const Filters = styled.div`
