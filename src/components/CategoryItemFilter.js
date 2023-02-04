@@ -53,7 +53,11 @@ function CategoryItemFilter({
         onClick={() => {
           setExpanded(!expanded);
           if (expanded)
-            section.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+            section.current.parentNode.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start',
+              inline: 'nearest',
+            });
         }}
       >
         {expanded ? 'Show Less' : 'Show More'}
