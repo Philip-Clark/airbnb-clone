@@ -140,16 +140,16 @@ const FilterButton = styled.button`
     pointer-events: none;
   }
   p {
-    width: min-content;
-    border-bottom: solid 3px white;
-    padding-bottom: 0.5em;
+    width: max-content;
+    border-bottom: solid 2px white;
+    padding-bottom: 1em;
   }
   &#active p {
-    border-bottom: solid 3px black;
+    border-bottom: solid 2px black;
     color: black;
   }
   &:hover p {
-    border-bottom: solid 3px #dddddd;
+    border-bottom: solid 2px #dddddd;
     color: black;
   }
 `;

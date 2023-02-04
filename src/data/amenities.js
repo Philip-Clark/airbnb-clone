@@ -1,7 +1,7 @@
 export const amenitiesList = [
   {
-    sectionTitle: 'Essentials',
-    amenities: [
+    title: 'Essentials',
+    items: [
       'Wifi',
       'Kitchen',
       'Washer',
@@ -15,8 +15,8 @@ export const amenitiesList = [
     ],
   },
   {
-    sectionTitle: 'Features',
-    amenities: [
+    title: 'Features',
+    items: [
       'Pool',
       'Hot tub',
       'Free parking on premises',
@@ -30,11 +30,11 @@ export const amenitiesList = [
     ],
   },
   {
-    sectionTitle: 'Location',
-    amenities: ['Beachfront', 'Waterfront'],
+    title: 'Location',
+    items: ['Beachfront', 'Waterfront'],
   },
   {
-    sectionTitle: 'Safety',
-    amenities: ['Smoke alarm', 'Carbon monoxide alarm'],
+    title: 'Safety',
+    items: ['Smoke alarm', 'Carbon monoxide alarm'],
   },
 ];

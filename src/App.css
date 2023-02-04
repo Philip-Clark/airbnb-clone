@@ -4,9 +4,14 @@
   margin: 0;
   padding: 0;
 }
+
+:root {
+  --vh: 100;
+}
 body {
   color: #222222;
   font-family: 'Poppins', sans-serif, Arial, Helvetica, sans-serif;
+  height: calc(var(--vh, 1vh) * 100);
 }
 
 body.noScroll {

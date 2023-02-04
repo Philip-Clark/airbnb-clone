@@ -1,11 +1,11 @@
+import { useRef } from 'react';
 import { useState } from 'react';
 import styled from 'styled-components';
-import { amenitiesList } from '../data/amenities';
 
-function Amenity({ title, onClick, amenities }) {
+function Item({ title, onClick, items }) {
   return (
     <TypeDiv>
-      <RadioBox type="checkBox" onClick={onClick} checked={amenities.includes(title)} />
+      <RadioBox type="checkBox" onClick={onClick} checked={items.includes(title)} />
       <p>{title}</p>
     </TypeDiv>
   );
@@ -18,37 +18,42 @@ const toggleItem = (item, array) => {
   return newArray;
 };
 
-function AmenitiesFilter({ setAmenitiesFilter, amenitiesFilter }) {
+function CategoryItemFilter({
+  filterSetter: setFilters,
+  filterGetter: filters,
+  data,
+  defaultSlice,
+}) {
   const [expanded, setExpanded] = useState(false);
   const catSlice = expanded ? Infinity : 1;
-  const itemSlice = expanded ? Infinity : 6;
-  const [scroll, setScroll] = useState(0);
+  const itemSlice = expanded ? Infinity : defaultSlice;
+  const section = useRef();
+
+  console.log(data);
   return (
-    <StyleWrapped className="AmenitiesFilter" id="amenitiesFilter">
-      {amenitiesList.slice(0, catSlice).map((category, catId) => (
+    <StyleWrapped className="CategoryItemFilter" ref={section}>
+      {data.slice(0, catSlice).map((category, catId) => (
         <div key={catId}>
-          <h4>{category.sectionTitle}</h4>
-          <AmenityList>
-            {category.amenities.slice(0, itemSlice).map((amenity, itemId) => (
-              <Amenity
-                title={amenity}
+          <h4>{category.title}</h4>
+          <ItemList>
+            {category.items.slice(0, itemSlice).map((item, itemId) => (
+              <Item
+                title={item}
                 key={`${catId}${itemId}`}
-                amenities={amenitiesFilter}
+                items={filters}
                 onClick={() => {
-                  setAmenitiesFilter(toggleItem(amenity, amenitiesFilter));
+                  setFilters(toggleItem(item, filters));
                 }}
               />
             ))}
-          </AmenityList>
+          </ItemList>
         </div>
       ))}
       <ShowMore
         onClick={() => {
           setExpanded(!expanded);
           if (expanded)
-            document
-              .getElementById('amenitiesFilter')
-              .parentNode.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+            section.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
         }}
       >
         {expanded ? 'Show Less' : 'Show More'}
@@ -79,7 +84,7 @@ const ShowMore = styled.button`
   font-weight: 500;
 `;
 
-const AmenityList = styled.div`
+const ItemList = styled.div`
   display: grid;
   gap: 1.5em;
   grid-template-columns: repeat(auto-fill, max(200px, calc(50% - 2em)));
@@ -109,12 +114,11 @@ const TypeDiv = styled.div`
 
 const RadioBox = styled.input`
   accent-color: #222222;
-  max-width: 2em;
-  flex: 1;
+  width: 1.5em;
   aspect-ratio: 1;
   &[type='checkBox']:not(:checked) {
     opacity: 0.5;
   }
 `;
 
-export default AmenitiesFilter;
+export default CategoryItemFilter;

@@ -7,7 +7,11 @@ import { listings } from '../data/listings';
 import PlaceTypeFilter from './PlaceTypeFilter';
 import RoomCountFilter from './RoomCountFilter';
 import PropertyTypeFilter from './PropertyTypeFilter';
-import AmenitiesFilter from './AmenitiesFilter';
+import AmenitiesFilter from './CategoryItemFilter';
+import CategoryItemFilter from './CategoryItemFilter';
+import { amenitiesList } from '../data/amenities';
+import { accessibilityList } from '../data/accessibility';
+import { hostLanguages } from '../data/hostLangs';
 
 const filterByPrice = (data, values) => {
   const filtered = data.filter(
@@ -75,6 +79,8 @@ function FilterModal({ opened, setModalOpen, setData, data, setFilterCount }) {
   const [bathroomCount, setBathroomCount] = useState('Any');
   const [propertyTypes, setPropertyTypes] = useState([]);
   const [amenitiesFilter, setAmenitiesFilter] = useState([]);
+  const [accessibilityFilter, setAccessibilityFilter] = useState([]);
+  const [hostLanguageFilter, setHostLanguageFilter] = useState([]);
 
   const [filteredData, setFilteredData] = useState([]);
 
@@ -92,9 +98,11 @@ function FilterModal({ opened, setModalOpen, setData, data, setFilterCount }) {
     tempData = filterByRoomAndBedCount(tempData, bathroomCount, bedroomCount, bedsCount);
     tempData = filterByPropertyType(tempData, propertyTypes);
     tempData = filterByAmenities(tempData, amenitiesFilter);
+    tempData = filterByAmenities(tempData, accessibilityFilter);
+    tempData = filterByAmenities(tempData, hostLanguageFilter);
 
     setFilterCount(
-      (priceRange.min != -Infinity && 1) +
+      (priceRange.min !== -Infinity && 1) +
         types.length +
         (bathroomCount !== 'Any' && 1) +
         (bedroomCount !== 'Any' && 1) +
@@ -104,7 +112,17 @@ function FilterModal({ opened, setModalOpen, setData, data, setFilterCount }) {
     );
 
     setFilteredData(tempData);
-  }, [priceRange, types, bathroomCount, bedroomCount, bedsCount, propertyTypes, amenitiesFilter]);
+  }, [
+    priceRange,
+    types,
+    bathroomCount,
+    bedroomCount,
+    bedsCount,
+    propertyTypes,
+    amenitiesFilter,
+    accessibilityFilter,
+    hostLanguageFilter,
+  ]);
 
   useEffect(() => {
     object.current.style.pointerEvents = opened ? 'all' : 'none';
@@ -162,9 +180,11 @@ function FilterModal({ opened, setModalOpen, setData, data, setFilterCount }) {
           </PropertyType>
           <Amenities>
             <h2>Amenities</h2>
-            <AmenitiesFilter
-              amenitiesFilter={amenitiesFilter}
-              setAmenitiesFilter={setAmenitiesFilter}
+            <CategoryItemFilter
+              filterGetter={amenitiesFilter}
+              filterSetter={setAmenitiesFilter}
+              defaultSlice={6}
+              data={amenitiesList}
             />
           </Amenities>
           <BookingOptions>
@@ -172,12 +192,26 @@ function FilterModal({ opened, setModalOpen, setData, data, setFilterCount }) {
           </BookingOptions>
           <Accessibility>
             <h2>Accessibility features</h2>
+            <h3>This info was provided by the Host and reviewed by Airbnb.</h3>
+
+            <CategoryItemFilter
+              filterGetter={accessibilityFilter}
+              filterSetter={setAccessibilityFilter}
+              defaultSlice={4}
+              data={accessibilityList}
+            />
           </Accessibility>
           <Extras>
             <h2>Top tier stays</h2>
           </Extras>
           <HostLang>
             <h2>Host language</h2>
+            <CategoryItemFilter
+              filterGetter={hostLanguageFilter}
+              filterSetter={setHostLanguageFilter}
+              defaultSlice={4}
+              data={hostLanguages}
+            />
           </HostLang>
         </FiltersSection>
         <BottomBar>
@@ -307,7 +341,17 @@ const PropertyType = styled.div`
 `;
 const Amenities = styled.div``;
 const BookingOptions = styled.div``;
-const Accessibility = styled.div``;
+const Accessibility = styled.div`
+  > {
+    font-size: 0.9em;
+  }
+
+  h3 {
+    font-weight: 400;
+    font-size: 0.9em;
+    color: #7b7b7b;
+  }
+`;
 const Extras = styled.div``;
 const HostLang = styled.div``;
 const BottomBar = styled.div`
