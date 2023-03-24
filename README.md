@@ -18,4 +18,8 @@ A work in progress clone of the [airbnb site](https://www.airbnb.com/). The goal
 <hr>
 
 
-![PSD 02](https://user-images.githubusercontent.com/56705400/223634698-8ecdf898-5dfc-4744-bfd3-a7666fa3fd24.png)
+![7661c0c3ad6484258d7a3abe9b55c68d](https://user-images.githubusercontent.com/56705400/227416333-ad7952f4-ee32-4f59-b081-03dcd13df8fd.jpg)
+
+
+
+
