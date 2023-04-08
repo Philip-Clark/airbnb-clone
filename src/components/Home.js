@@ -27,6 +27,13 @@ function Home() {
     setFilterModalOpen(true);
   };
 
+  window.addEventListener('scroll', (e) => {
+    if (!document.getElementById('header')) return;
+    if (window.scrollY > 10) {
+      document.getElementById('header').style.boxShadow = '0 0 1em #00000056';
+    } else document.getElementById('header').style.boxShadow = 'none';
+  });
+
   return (
     <StyleWrapped id="Home">
       <HomeHeader id="header">
