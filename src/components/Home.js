@@ -23,12 +23,6 @@ function Home() {
     if (quickFilter) setData(listings.filter(quickFilter));
   }, [quickFilter]);
 
-  window.addEventListener('scroll', (e) => {
-    if (window.scrollY > 10)
-      document.getElementById('header').style.boxShadow = '0 0 1em #00000056';
-    else document.getElementById('header').style.boxShadow = 'none';
-  });
-
   const open = () => {
     setFilterModalOpen(true);
   };
