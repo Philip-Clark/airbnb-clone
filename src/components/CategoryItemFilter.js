@@ -29,7 +29,6 @@ function CategoryItemFilter({
   const itemSlice = expanded ? Infinity : defaultSlice;
   const section = useRef();
 
-  console.log(data);
   return (
     <StyleWrapped className="CategoryItemFilter" ref={section}>
       {data.slice(0, catSlice).map((category, catId) => (

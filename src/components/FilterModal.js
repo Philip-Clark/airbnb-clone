@@ -12,53 +12,10 @@ import CategoryItemFilter from './CategoryItemFilter';
 import { amenitiesList } from '../data/amenities';
 import { accessibilityList } from '../data/accessibility';
 import { hostLanguages } from '../data/hostLangs';
-
-const filterByPrice = (data, values) => {
-  const filtered = data.filter(
-    (e) =>
-      parseFloat(e.price.replace(/[$,]/g, '')) >= values.min &&
-      parseFloat(e.price.replace(/[$,]/g, '')) <= values.max
-  );
-
-  return filtered;
-};
-
-const filterByType = (data, values) => {
-  if (values.length === 0) return data;
-  const filtered = data.filter((e) => values.includes(e.room_type.toLowerCase()));
-  return filtered;
-};
-
-const filterByRoomAndBedCount = (data, bathRooms, bedRooms, beds) => {
-  let filtered = data;
-  if (bedRooms !== 'Any') filtered = filtered.filter((item) => item.bedrooms >= bedRooms);
-  if (bathRooms !== 'Any')
-    filtered = filtered.filter((item) => parseInt(item.bathrooms_text.split(' ')[0]) >= bathRooms);
-  if (beds !== 'Any') filtered = filtered.filter((item) => item.beds >= beds);
-
-  return filtered;
-};
-
-const filterByAmenities = (data, values) => {
-  if (values.length === 0) return data;
-  let filtered = data.filter((item) => values.every((amenity) => item.amenities.includes(amenity)));
-  return filtered;
-};
-
-const filterByPropertyType = (data, values) => {
-  let filtered = data;
-  if (values.length === 0) return data;
-
-  filtered = data.filter(
-    (e) =>
-      values.some((type) => e.room_type.toLowerCase().includes(type.toLowerCase())) ||
-      values.some((type) => e.property_type.toLowerCase().includes(type.toLowerCase())) ||
-      values.some((type) => e.name.toLowerCase().includes(type.toLowerCase())) ||
-      values.some((type) => e.description.toLowerCase().includes(type.toLowerCase()))
-  );
-
-  return filtered;
-};
+const pipe =
+  (...fns) =>
+  (x) =>
+    fns.reduce((v, f) => f(v), x);
 
 const getAvg = () => {
   let totalPrice = 0;
@@ -71,7 +28,7 @@ const getAvg = () => {
   return totalPrice / count;
 };
 
-function FilterModal({ opened, setModalOpen, setData, data, setFilterCount }) {
+function FilterModal({ opened, setModalOpen, setData, setFilterCount }) {
   const [priceRange, setPriceRange] = useState({ min: -Infinity, max: Infinity });
   const [types, setTypes] = useState([]);
   const [bedroomCount, setBedroomCount] = useState('Any');
@@ -82,47 +39,79 @@ function FilterModal({ opened, setModalOpen, setData, data, setFilterCount }) {
   const [accessibilityFilter, setAccessibilityFilter] = useState([]);
   const [hostLanguageFilter, setHostLanguageFilter] = useState([]);
 
-  const [filteredData, setFilteredData] = useState([]);
+  const filterByPrice = (data) => {
+    return data.filter(
+      (e) =>
+        parseFloat(e.price.replace(/[$,]/g, '')) >= priceRange.min &&
+        parseFloat(e.price.replace(/[$,]/g, '')) <= priceRange.max
+    );
+  };
+
+  const filterByType = (data) => {
+    if (types.length === 0) return data;
+    return data.filter((e) => types.includes(e.room_type.toLowerCase()));
+  };
+
+  const filterByBedRooms = (data) => {
+    if (bedroomCount === 'Any') return data;
+    return data.filter((item) => item.bedrooms >= bedroomCount);
+  };
+
+  const filterByBathrooms = (data) => {
+    if (bathroomCount === 'Any') return data;
+    return data.filter((item) => parseInt(item.bathrooms_text.split(' ')[0]) >= bathroomCount);
+  };
+
+  const filterByBeds = (data) => {
+    if (bedsCount === 'Any') return data;
+    return data.filter((item) => item.beds >= bedsCount);
+  };
+
+  const filterByAmenities = (data) => {
+    if (amenitiesFilter.length === 0) return data;
+    return data.filter((item) =>
+      amenitiesFilter.every((amenity) => item.amenities.includes(amenity))
+    );
+  };
+
+  const filterByPropertyType = (data) => {
+    if (propertyTypes.length === 0) return data;
+    return data.filter(
+      (e) =>
+        propertyTypes.some((type) => e.room_type.toLowerCase().includes(type.toLowerCase())) ||
+        propertyTypes.some((type) => e.property_type.toLowerCase().includes(type.toLowerCase())) ||
+        propertyTypes.some((type) => e.name.toLowerCase().includes(type.toLowerCase())) ||
+        propertyTypes.some((type) => e.description.toLowerCase().includes(type.toLowerCase()))
+    );
+  };
+
+  const filteredData = pipe(
+    filterByPrice,
+    filterByType,
+    filterByBeds,
+    filterByBathrooms,
+    filterByBedRooms,
+    filterByPropertyType,
+    filterByAmenities,
+    filterByAmenities,
+    filterByAmenities
+  )(listings);
+
+  setFilterCount(
+    (priceRange.min !== -Infinity && 1) +
+      types.length +
+      (bathroomCount !== 'Any' && 1) +
+      (bedroomCount !== 'Any' && 1) +
+      (bedsCount !== 'Any' && 1) +
+      propertyTypes.length +
+      amenitiesFilter.length
+  );
 
   let count = filteredData.length;
   const avgPrice = parseInt(getAvg());
   if (opened) document.body.classList.add('noScroll');
   else document.body.classList.remove('noScroll');
-
   const object = createRef();
-
-  //Apply filters
-  useEffect(() => {
-    let tempData = filterByPrice(listings, priceRange);
-    tempData = filterByType(tempData, types);
-    tempData = filterByRoomAndBedCount(tempData, bathroomCount, bedroomCount, bedsCount);
-    tempData = filterByPropertyType(tempData, propertyTypes);
-    tempData = filterByAmenities(tempData, amenitiesFilter);
-    tempData = filterByAmenities(tempData, accessibilityFilter);
-    tempData = filterByAmenities(tempData, hostLanguageFilter);
-
-    setFilterCount(
-      (priceRange.min !== -Infinity && 1) +
-        types.length +
-        (bathroomCount !== 'Any' && 1) +
-        (bedroomCount !== 'Any' && 1) +
-        (bedsCount !== 'Any' && 1) +
-        propertyTypes.length +
-        amenitiesFilter.length
-    );
-
-    setFilteredData(tempData);
-  }, [
-    priceRange,
-    types,
-    bathroomCount,
-    bedroomCount,
-    bedsCount,
-    propertyTypes,
-    amenitiesFilter,
-    accessibilityFilter,
-    hostLanguageFilter,
-  ]);
 
   useEffect(() => {
     object.current.style.pointerEvents = opened ? 'all' : 'none';
