@@ -93,8 +93,6 @@ function FilterModal({ opened, setModalOpen, setData, setFilterCount }) {
     filterByBedRooms,
     filterByPropertyType,
     filterByAmenities,
-    filterByAmenities,
-    filterByAmenities
   )(listings);
 
   setFilterCount(
